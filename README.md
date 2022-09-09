@@ -31,17 +31,11 @@ Ticket holders cannot cancel their tickets. However, the event organizer can can
 - [Foundry](https://github.com/foundry-rs/foundry) 
 
 
-## Installation
+## Installation and Test
 
 ```bash
 $ git clone --recurse-submodules https://github.com/RayKitajima/TicketForge.git
 $ cd TicketForge
-$ forge install
-```
-
-## Run the tests
-
-```bash
 $ forge test -vvvv
 ```
 
