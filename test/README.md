@@ -17,8 +17,8 @@ Capacity of "Standard" is 500, "VIP" is 100 and "VVIP" is 20.
 | [Show.t.sol](Show.t.sol) | Basic test for Show.sol |
 | [TicketContract.t.sol](TicketContract.t.sol) | Basic test for Ticket.sol |
 | [Staff.t.sol](Staff.t.sol) | Basic test for Staff.sol |
-| [BuyingTicket.t.sol](BuyingTicket.t.sol) | Test for buying tickets with Buyer model |
-| [BuyerUsecase.t.sol](BuyerUsecase.t.sol) | Test for another buyer usecase |
+| [BuyingTicket.t.sol](BuyingTicket.t.sol) | Property based test for buying tickets |
+| [BuyerUsecase.t.sol](BuyerUsecase.t.sol) | Test for buyer usecase |
 | [CancelingTicket.t.sol](CancelingTicket.t.sol) | Test for canceling show |
 | [CheckIn.t.sol](CheckIn.t.sol) | Test for check-in |
 | [Withdraw.t.sol](Withdraw.t.sol) | Test for withdraw |

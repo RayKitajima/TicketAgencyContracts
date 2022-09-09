@@ -50,7 +50,24 @@ contract BuyingTicketTest is Test, IERC721Receiver {
         return this.onERC721Received.selector;
     }
 
+    // fuzz test
     function testBuyTicketBasic(
+        uint256 _showIdSeed,
+        uint256 _seatTypeIdSeed,
+        uint256 _seatNumSeed
+    ) public {
+        uint256 showId = _showIdSeed % 2; // showId : 0..1
+        Show show = agencyContract.getShow(showId);
+
+        uint256 seatTypeId = _seatTypeIdSeed % show.getSeatTypesCount();
+
+        uint256 seatNum = _seatNumSeed % show.getSeatsCount(seatTypeId);
+
+        // do my test
+        _testBuyTicketBasic(showId, seatTypeId, seatNum);
+    }
+
+    function _testBuyTicketBasic(
         uint256 _showId,
         uint256 _seatTypeId,
         uint256 _seatNum
