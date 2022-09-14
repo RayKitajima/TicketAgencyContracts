@@ -4,6 +4,7 @@ pragma solidity ^0.8.15;
 import "forge-std/Test.sol";
 import "openzeppelin/contracts/utils/Strings.sol";
 
+import "../src/AgencyFactory.sol";
 import "../src/Agency.sol";
 import "../src/Show.sol";
 
@@ -46,21 +47,28 @@ contract MusicFes {
     constructor(Vm _vm, address _owner) {
         vm = _vm;
         owner = _owner;
+    }
+
+    function setup() public {
         setupAgency();
         setupShowDay1();
         setupShowDay2();
     }
 
-    function setupAgency() public {
-        agencyContract = new Agency(
+    function setupAgency() internal {
+        AgencyFactory agencyFactoryContract = new AgencyFactory();
+        (uint256 agencyId, ) = agencyFactoryContract.createAgency{
+            value: 0.01 ether
+        }(
             "Forge Music Fes. 2022 Ticket Agency",
             "The Forge music festival is an annual event that takes place in the city of Los Angeles, California. It is a two-day event that features a variety of different genres of music, including rock, pop, hip hop, and EDM. The festival takes place on the first weekend of November, and it is typically held at the Los Angeles Memorial Coliseum.",
             "https://musicfes2022.example.com/header.png"
         );
+        agencyContract = agencyFactoryContract.getAgency(agencyId);
         agencyContract.transferOwnershipTo(owner); // transfer ownership to 'owner' from this (MusicFes) contract
     }
 
-    function setupShowDay1() public {
+    function setupShowDay1() internal {
         vm.startPrank(owner);
         showDay1Id = agencyContract.createShow(
             "Forge Music Fes. 2022 Day1",
@@ -76,7 +84,7 @@ contract MusicFes {
         vm.stopPrank();
     }
 
-    function setupShowDay2() public {
+    function setupShowDay2() internal {
         vm.startPrank(owner);
         showDay2Id = agencyContract.createShow(
             "Forge Music Fes. 2022 Day2",
@@ -92,7 +100,7 @@ contract MusicFes {
         vm.stopPrank();
     }
 
-    function setupSeats(Show show) public {
+    function setupSeats(Show show) internal {
         FesSeatTypes seatTypes = new FesSeatTypes(show);
 
         seatTypes.addSeatType("Standard", 1 * CONST.TICKET_PRICE_UNIT, 500);

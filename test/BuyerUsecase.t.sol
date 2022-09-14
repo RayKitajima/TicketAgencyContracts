@@ -20,14 +20,17 @@ contract BuyerUsecaseTest is Test {
 
     function setUp() public {
         owner = address(this);
+
         fesContract = new MusicFes(vm, owner);
+        vm.deal(address(fesContract), 100 ether);
+        fesContract.setup();
+
         agencyContract = fesContract.agencyContract();
+        vm.deal(address(agencyContract), 100 ether);
+        
+        vm.deal(address(this), 100 ether);
         
         fesContract.deploy();
-
-        vm.deal(address(agencyContract), 100 ether);
-        vm.deal(address(fesContract), 100 ether);
-        vm.deal(address(this), 100 ether);
         
         fesContract.setAllShowsScheduled();
     }
