@@ -4,6 +4,7 @@ pragma solidity ^0.8.15;
 import "forge-std/Test.sol";
 import "openzeppelin/contracts/utils/Strings.sol";
 
+import "../src/AgencyFactory.sol";
 import "../src/Agency.sol";
 import "../src/Show.sol";
 
@@ -14,21 +15,45 @@ contract ShowTest is Test {
     address owner;
 
     MusicFes fesContract;
+    AgencyFactory agencyFactoryContract;
     Agency agencyContract;
 
     function setUp() public {
         owner = address(this);
+        agencyFactoryContract = new AgencyFactory();
 
-        fesContract = new MusicFes(vm, owner);
+        fesContract = new MusicFes(vm, owner, agencyFactoryContract);
         vm.deal(address(fesContract), 100 ether);
         fesContract.setup();
 
         agencyContract = fesContract.agencyContract();
         vm.deal(address(agencyContract), 100 ether);
-        
+
         vm.deal(address(this), 100 ether);
-        
+
         fesContract.deploy();
+    }
+
+    function testAgencyFactory() public {
+        AgencyFactory.AgencyDigest[]
+            memory agencyDigests = agencyFactoryContract.getAgenciesByAddress(
+                owner
+            );
+        assertEq(agencyDigests.length, 1, "agencyDigests.length should be 1");
+
+        AgencyFactory.AgencyDigest memory agencyDigest = agencyDigests[0];
+        assertTrue(
+            Utils.strcmp(
+                agencyDigest.title,
+                "Forge Music Fes. 2022 Ticket Agency"
+            ),
+            "Agency title is not correct"
+        );
+        assertEq(
+            agencyDigest.agencyAddress,
+            address(agencyContract),
+            "Agency address is not correct"
+        );
     }
 
     function testAgency() public {
@@ -292,7 +317,8 @@ contract ShowTest is Test {
     function subtestSeatTypes(Show show) public {
         // get seat types
         (
-            , // uint256[] memory seatTypeIds
+            ,
+            // uint256[] memory seatTypeIds
             string[] memory seatTypeNames,
             uint256[] memory prices,
             bool[] memory availables

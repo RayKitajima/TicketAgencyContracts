@@ -30,7 +30,9 @@ contract MusicFes {
     Vm vm;
     address owner;
 
+    AgencyFactory public agencyFactoryContract;
     Agency public agencyContract;
+    address public agencyAddress;
 
     uint256 public showDay1Id;
     Show public showDay1;
@@ -44,9 +46,10 @@ contract MusicFes {
      * @param _vm VM environment for testing
      * @param _owner The address of the owner of this contract.
      */
-    constructor(Vm _vm, address _owner) {
+    constructor(Vm _vm, address _owner, AgencyFactory _agencyFactoryContract) {
         vm = _vm;
         owner = _owner;
+        agencyFactoryContract = _agencyFactoryContract;
     }
 
     function setup() public {
@@ -56,8 +59,7 @@ contract MusicFes {
     }
 
     function setupAgency() internal {
-        AgencyFactory agencyFactoryContract = new AgencyFactory();
-        (uint256 agencyId, ) = agencyFactoryContract.createAgency{
+        (uint256 agencyId, address _agencyAddress) = agencyFactoryContract.createAgency{
             value: 0.01 ether
         }(
             "Forge Music Fes. 2022 Ticket Agency",
@@ -66,6 +68,8 @@ contract MusicFes {
         );
         agencyContract = agencyFactoryContract.getAgency(agencyId);
         agencyContract.transferOwnershipTo(owner); // transfer ownership to 'owner' from this (MusicFes) contract
+
+        agencyAddress = _agencyAddress;
     }
 
     function setupShowDay1() internal {

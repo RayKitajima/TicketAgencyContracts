@@ -3,6 +3,7 @@ pragma solidity ^0.8.15;
 
 import "forge-std/Test.sol";
 
+import "../src/AgencyFactory.sol";
 import "../src/Agency.sol";
 import "../src/Show.sol";
 
@@ -12,12 +13,14 @@ contract StaffTest is Test {
     address owner;
 
     MusicFes fesContract;
+    AgencyFactory agencyFactoryContract;
     Agency agencyContract;
 
     function setUp() public {
         owner = address(this);
+        agencyFactoryContract = new AgencyFactory();
 
-        fesContract = new MusicFes(vm, owner);
+        fesContract = new MusicFes(vm, owner, agencyFactoryContract);
         vm.deal(address(fesContract), 100 ether);
         fesContract.setup();
 

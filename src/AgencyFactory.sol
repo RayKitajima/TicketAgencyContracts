@@ -48,23 +48,23 @@ contract AgencyFactory {
         view
         returns (AgencyDigest[] memory)
     {
-        AgencyDigest[] memory selectedAgencies = new AgencyDigest[](
-            agencyDigests.length
-        );
-        uint256 count = 0;
-        for (uint256 i = 0; i < agencyDigests.length; i++) {
-            if (agencyDigests[i].agencyAddress == _address) {
-                selectedAgencies[count] = agencyDigests[i];
-                count++;
+        uint256[] memory selectedIndices = new uint256[](agencies.length);
+        uint256 selectedAgencyCount = 0;
+        for (uint256 i = 0; i < agencies.length; i++) {
+            if (agencies[i].owner() == _address) {
+                selectedIndices[selectedAgencyCount] = i;
+                selectedAgencyCount++;
             }
         }
 
-        AgencyDigest[] memory result = new AgencyDigest[](count);
-        for (uint256 i = 0; i < count; i++) {
-            result[i] = selectedAgencies[i];
+        AgencyDigest[] memory selectedAgencyDigests = new AgencyDigest[](
+            selectedAgencyCount
+        );
+        for (uint256 i = 0; i < selectedAgencyCount; i++) {
+            selectedAgencyDigests[i] = agencyDigests[selectedIndices[i]];
         }
 
-        return result;
+        return selectedAgencyDigests;
     }
 
     function getAgencyDigests() public view returns (AgencyDigest[] memory) {

@@ -5,6 +5,7 @@ import "forge-std/Test.sol";
 import "openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
 import "openzeppelin/contracts/utils/Strings.sol";
 
+import "../src/AgencyFactory.sol";
 import "../src/Agency.sol";
 import "../src/Show.sol";
 
@@ -15,12 +16,14 @@ contract BuyingTicketTest is Test, IERC721Receiver {
     address owner;
 
     MusicFes fesContract;
+    AgencyFactory agencyFactoryContract;
     Agency agencyContract;
 
     function setUp() public {
         owner = address(this);
+        agencyFactoryContract = new AgencyFactory();
 
-        fesContract = new MusicFes(vm, owner);
+        fesContract = new MusicFes(vm, owner, agencyFactoryContract);
         vm.deal(address(fesContract), 100 ether);
         fesContract.setup();
 

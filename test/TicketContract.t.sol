@@ -4,6 +4,7 @@ pragma solidity ^0.8.15;
 import "forge-std/Test.sol";
 import "openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
 
+import "../src/AgencyFactory.sol";
 import "../src/Agency.sol";
 import "../src/Ticket.sol";
 
