@@ -67,11 +67,10 @@ contract AgencyFactory {
         return result;
     }
 
-    function getAgencyDigestsa() public view returns (AgencyDigest[] memory) {
+    function getAgencyDigests() public view returns (AgencyDigest[] memory) {
         return agencyDigests;
     }
 
-    // get agency
     function getAgency(uint256 _agencyId) public view returns (Agency) {
         return agencies[_agencyId];
     }
