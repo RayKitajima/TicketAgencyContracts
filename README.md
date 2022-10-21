@@ -44,6 +44,11 @@ $ cd TicketAgencyContracts
 $ forge test -vvvv
 ```
 
+# How to use
+
+Currrently, you have to change `CREATE_FEE` in `AgencyFactory.sol` to `0`, or modify to ignore the fee. 
+This is because the factory fee management is not implemented yet. 
+
 # Contributing
 
 Feel free to open an issue or a pull request!
